@@ -502,18 +502,19 @@ void FProvider::PrepareFilenamesForAddCommand(
 }
 
 TArray<FSourceControlStateRef> FProvider::GetCachedStateByPredicate(
-	const TFunctionRef<bool(const FSourceControlStateRef&)>& Predicate) const
+	const TFunctionRef<bool(const FSourceControlStateRef&)>& Predicate
+) const
 {
-	TArray<FSourceControlStateRef> Reval;
-	for(auto Iter = FileStateMap.CreateConstIterator(); Iter; ++Iter)
+	TArray<FSourceControlStateRef> MatchingFileStates;
+	for (const auto& FileStateMapEntry : FileStateMap)
 	{
-		auto FileState = Iter.Value();
-		if(Predicate(FileState))
+		auto FileState = FileStateMapEntry.Value;
+		if (Predicate(FileState))
 		{
-			Reval.Add(FileState);
+			MatchingFileStates.Add(FileState);
 		}
 	}
-	return Reval;
+	return MatchingFileStates;
 }
 
 #undef LOCTEXT_NAMESPACE
