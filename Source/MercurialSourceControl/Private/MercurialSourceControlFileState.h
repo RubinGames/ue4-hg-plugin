@@ -76,6 +76,11 @@ public:
 		History = InFileRevisions;
 	}
 
+	virtual bool CanDelete() const override
+	{
+		return false;
+	}
+
 	// kill ambiguous error message:
 	TSharedRef< FFileState, ESPMode::ThreadSafe> AsShared()
 	{
